@@ -1,0 +1,13 @@
+package main
+
+import "fmt"
+
+func main() {
+
+	a := 10
+	b := 12
+	t := 15
+	L := (a + b) * t / 2
+	fmt.Println("Luas trapesium adalah= %d", L)
+
+}
