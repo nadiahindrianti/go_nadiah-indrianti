@@ -3,7 +3,9 @@ package main
 import "fmt"
 
 func main() {
-	blng := 11
+	var blng int
+	fmt.Println("Masukkan nilai =")
+	fmt.Scan(&blng)
 	if blng%2 != 0 {
 		fmt.Println(blng, "bilangan ganjil")
 	} else {
@@ -11,4 +13,3 @@ func main() {
 	}
 
 }
-
