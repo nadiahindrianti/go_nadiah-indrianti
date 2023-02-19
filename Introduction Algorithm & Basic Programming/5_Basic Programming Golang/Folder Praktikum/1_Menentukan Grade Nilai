@@ -1,0 +1,21 @@
+package main
+
+import "fmt"
+
+func main() {
+	var nilai int=83
+	switch nilai {
+		case nilai>=80;nilai<=100:
+			fmt.Println("nilai A")
+		case nilai>=65;nilai<=79:
+			fmt.Println("nilai B")
+		case nilai>=50;nilai<=64:
+			fmt.Println("nilai C")
+		case nilai>=35;nilai<=49:
+			fmt.Println("nilai D")
+		case nilai>=0;nilai<=34:
+			fmt.Println("nilai E")
+		case nilai>=100;nilai<=0:
+			fmt.Println("nilai invalid")
+	}
+}
