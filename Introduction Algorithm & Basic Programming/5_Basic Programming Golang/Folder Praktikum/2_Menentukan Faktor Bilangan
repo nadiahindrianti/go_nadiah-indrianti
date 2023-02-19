@@ -1,0 +1,17 @@
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Program Mencetak Faktor Bilangan")
+	var blng int
+	fmt.Println("Masukkan Bilangan: ")
+	fmt.Scan(&blng)
+	fmt.Println("Faktor dari Bilangan ", blng, "yaitu")
+	for angka := 1; angka <= blng; angka++ {
+		if blng%angka == 0 {
+			fmt.Println(angka)
+		}
+	}
+	fmt.Printf("\n\n\n")
+}
