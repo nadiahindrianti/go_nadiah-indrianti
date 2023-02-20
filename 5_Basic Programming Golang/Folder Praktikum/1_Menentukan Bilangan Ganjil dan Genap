@@ -1,0 +1,15 @@
+package main
+
+import "fmt"
+
+func main() {
+	var blng int
+	fmt.Println("Masukkan nilai =")
+	fmt.Scan(&blng)
+	if blng%2 != 0 {
+		fmt.Println(blng, "bilangan ganjil")
+	} else {
+		fmt.Println(blng, "bilangan genap")
+	}
+
+}
