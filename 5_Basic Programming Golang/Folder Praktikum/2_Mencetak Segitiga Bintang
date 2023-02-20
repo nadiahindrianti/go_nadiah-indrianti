@@ -1,0 +1,19 @@
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Segitiga *")
+	for baris := 1; baris <= 7; baris++ {
+		for enter := 7; enter >= baris; enter-- {
+			fmt.Printf(" ")
+		}
+		for kolom := (baris - 1); kolom >= 1; kolom-- {
+			fmt.Printf("*")
+		}
+		for kolom := 1; kolom <= baris; kolom++ {
+			fmt.Printf("*")
+		}
+		fmt.Printf("\n")
+	}
+}
