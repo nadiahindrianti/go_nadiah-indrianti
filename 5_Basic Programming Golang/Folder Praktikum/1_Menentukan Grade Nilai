@@ -1,0 +1,20 @@
+package main
+
+import "fmt"
+
+func main() {
+	var blng int
+	fmt.Println("Masukkan nilai =")
+	fmt.Scan(&blng)
+	if blng >= 80 && blng <= 100 {
+		fmt.Println("nilai A")
+	} else if blng >= 65 && blng <= 79 {
+		fmt.Println("nilai B")
+	} else if blng >= 50 && blng <= 64 {
+		fmt.Println("nilai C")
+	} else if blng >= 35 && blng <= 49 {
+		fmt.Println("nilai D")
+	} else if blng < 0 && blng > 100 {
+		fmt.Println("nilai invalid")
+	}
+}
