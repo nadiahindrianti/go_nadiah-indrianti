@@ -1,0 +1,14 @@
+package main
+
+import "fmt"
+
+func main() {
+	var blng int
+	fmt.Print("Masukkan jumlah panjang sisi atas dan bawah: ")
+	fmt.Scan(&blng)
+	var angka int
+	fmt.Print("Masukkan tinggi: ")
+	fmt.Scan(&angka)
+	hasil := blng * angka / 2
+	fmt.Printf("luas Trapesium adalah= %d", hasil)
+}
