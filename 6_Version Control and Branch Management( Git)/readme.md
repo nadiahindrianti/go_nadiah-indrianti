@@ -1,12 +1,12 @@
 
 # Version Control and Branch Management(Git)
 
-Pada session 6 mempelajari tentang version control and branch management git. Saya mempelajari carra dan kode clone, status, add, commit, push, dan lain-lain.  
+Pada session 6 mempelajari tentang version control and branch management git. Saya mempelajari carra dan kode clone, config, status, add, commit, push, dan lain-lain.  
 
 
-## Documentation
+## Dokumentasi
 
-[Documentation](https://linktodocumentation)
+[Dokumentasi lengkapnya ](https://github.com/nadiahindrianti/go_nadiah-indrianti/tree/main/6_Version%20Control%20and%20Branch%20Management(%20Git)/Screenshoot)
 
 
 ## Run Locally
@@ -39,4 +39,5 @@ Branching
 ```
 
 Selengkapnya dapat dilihat pada link documentasi
+
 
