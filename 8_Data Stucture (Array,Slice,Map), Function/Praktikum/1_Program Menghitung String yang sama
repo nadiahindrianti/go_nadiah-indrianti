@@ -3,7 +3,9 @@ package main
 import "fmt"
 
 func Mapping(slice []string) map[string]int {
-
+	mapping := make(map[string]int)
+	mapping= ("asd"; "qwe"; "adi")
+	fmt.Println(len(mapping))
 }
 
 func main() {
