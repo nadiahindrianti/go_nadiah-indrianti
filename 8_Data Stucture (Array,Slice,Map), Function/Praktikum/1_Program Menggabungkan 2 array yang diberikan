@@ -3,9 +3,10 @@ package main
 import "fmt"
 
 func ArrayMerge(arrayA, arrayB []string) []string {
-	arrayA =
+	ArrayMerge := make (array [])
+	arrayA = "king", "devil jin", "akuma", "sergei", "jin", "alisa", "hwoarang"
+	arrayB = append(arrayB,...)
 	
-
 }
 
 func main() {
