@@ -1,0 +1,44 @@
+package main
+
+import (
+	"fmt"
+)
+
+type Student struct {
+	name  string
+	score int
+}
+
+
+func getMinMax(number []int, name []string) (min int, max int) {
+	min = number[0]
+	max = number[0]
+	for _, value := range number {
+		if value < min {
+			min = value
+		}
+		if value > max {
+			max = value
+		}
+	}
+	return 
+}
+
+func main() {
+	var a1, a2, a3, a4, a5, a6, name1, name2, name3, name4, name5, name6, min, max int
+	fmt.Scan(&a1)
+	fmt.Scan(&name1)
+	fmt.Scan(&a2)
+	fmt.Scan(&name2)
+	fmt.Scan(&a3)
+	fmt.Scan(&name3)
+	fmt.Scan(&a4)
+	fmt.Scan(&name4)
+	fmt.Scan(&a5)
+	fmt.Scan(&name5)
+	fmt.Scan(&a6)
+	fmt.Scan(&name6)
+	min, max = getMinMax({&a1, &name1}, {&a2, &name2}, {&a3, &name3}, {&a4, &name4}, {&a5, &name5}, {&a6, n&ame6})
+	fmt.Println("Nilai min", min)
+	fmt.Println("Nilai min", max)
+}
