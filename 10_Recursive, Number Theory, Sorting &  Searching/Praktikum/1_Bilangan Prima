@@ -1,0 +1,20 @@
+package main
+
+import "fmt"
+
+func primeX(number int) int {
+	for number := 2; number <= 100; number++ {
+		if (number%number == 0) && (number == 2) && (number != 1) {
+			number++
+		}
+	}
+	return primeX(number)
+}
+
+func main() {
+	fmt.Println(primeX(1))  // 2
+	fmt.Println(primeX(5))  // 11
+	fmt.Println(primeX(8))  // 19
+	fmt.Println(primeX(9))  // 23
+	fmt.Println(primeX(10)) // 29
+}
