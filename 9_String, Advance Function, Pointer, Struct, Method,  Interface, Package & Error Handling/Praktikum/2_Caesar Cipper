@@ -1,0 +1,17 @@
+package main
+
+import "fmt"
+
+func caesar(offset int, input string) string {
+	for j := 0; j < len(input); j++ {
+		fmt.Println("%d", input[j]+3)
+	}
+}
+
+func main() {
+	fmt.Println(caesar(3, "abc"))                           // def
+	fmt.Println(caesar(2, "alta"))                          // def
+	fmt.Println(caesar(10, "alterraacademy"))               // kvdobbkkmknowi
+	fmt.Println(caesar(1, "abcdefghijklmnopqrstuvwxyz"))    // bcdefghijklmnopqrstuvwxyza
+	fmt.Println(caesar(1000, "abcdefghijklmnopqrstuvwxyz")) // mnopqrstuvwxyzabcdefghijkl
+}
