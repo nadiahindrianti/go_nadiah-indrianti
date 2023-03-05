@@ -1,0 +1,19 @@
+package main
+
+import "fmt"
+
+type Property struct {
+	fuelln int
+}
+
+func (P *Property) IncreaseFuelln() {
+	P.fuelln = P.fuelln * 2 / 3
+}
+
+func main() {
+	PropertyF := Property{60}
+	fmt.Println("Jarak Tempuh dengan bahan bakar", PropertyF, "adalah")
+	PropertyF.IncreaseFuelln()
+	fmt.Println(PropertyF.fuelln, "mill")
+
+}
