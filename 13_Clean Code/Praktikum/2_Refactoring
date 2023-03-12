@@ -1,7 +1,9 @@
 package main
 
+import "fmt"
+
 type kendaraan struct {
-	totalroda       int
+	totalperjalanan int
 	kecepatanperjam int
 }
 
@@ -9,12 +11,14 @@ type mobil struct {
 	kendaraan
 }
 
-func (m *mobil) berjalan() {
-	m.tambahkecepatan(10)
+func (m *mobil) berjalan(mobil chan<- int, jarak1, jarak2 int, tambahkecepatan int) {
+	mobil <- jarak1 + jarak2
+	fmt.Println(jarak1 + jarak2)
 }
 
 func (m *mobil) tambahkecepatan(kecepatanbaru int) {
-	m.kecepatanperjam = m.kecepatanperjam + kecepatanbaru
+	totalperjalanan = m.kecepatanperjam + kecepatanbaru
+	fmt.Println(m.kecepatanperjam)
 }
 
 func main() {
