@@ -2,33 +2,52 @@ package main
 
 import (
 	"fmt"
+	"sync"
 	"time"
 )
 
-func multiple(res chan<- int, angka1 int) {
-	res <- angka1
-	for angka1 := 10; angka1 <= 50; angka1++ {
-		if angka1%3 == 0 {
-			fmt.Println(angka1, "merupakan kelipatan nilai")
-		} else {
-			fmt.Println(angka1, "bukan kelipatan nilai")
-		}
-	}
+type Program struct {
+	factorial int
+	m         sync.Mutex
 }
 
-func parameter(nilai <-chan int) {
-	for x := 0; x < 100; x++ {
-		time.Sleep(time.Second)
-		fmt.Printf("Program Mencari Angka Kelipatan dari suatu nilai yaitu %v \n dari bilangan 10 hingga 50", <-nilai)
+func (fact *Program) number(blng, angka int) {
+	fact.m.Lock()
+	defer fact.m.Unlock()
+	fmt.Println("Faktor dari Bilangan ", blng, "yaitu")
+	for angka := 1; angka <= blng; angka++ {
+		if blng%angka == 0 {
+			fmt.Println(angka)
+		}
 	}
+	fmt.Printf("\n\n\n")
+}
+
+func (fact *Program) Cetak(blng2, angka2 int, factor int) {
+	fact.m.Lock()
+	defer fact.m.Unlock()
+	for angka2 := 0; angka2 < 10; angka2++ {
+		factor := 0
+		if blng2 < angka2 {
+			factor += 2
+		} else {
+			factor += 3
+		}
+
+	}
+
+	var nilai []int
+	nilai = append(nilai, factor)
+	return nilai
 }
 
 func main() {
-	fmt.Println("---------------------------------------------------------------------------------------------")
-	results := make(chan int)
-	go multiple(results, 3)
-	go parameter(results)
+	fact := &Program{}
+
+	go func() {
+		fact.number(3, 3)
+	}()
 
 	time.Sleep(time.Second * 10)
-	close(results)
+	return fact.Cetak()
 }
