@@ -6,20 +6,22 @@ import (
 )
 
 func multiple(res chan<- int, angka1 int) {
+	time.Sleep(time.Second * 2)
 	res <- angka1
-	for angka1 := 10; angka1 <= 50; angka1++ {
-		if angka1%3 == 0 {
-			fmt.Println(angka1, "merupakan kelipatan nilai")
+	for angka1 := 0; angka1 <= 50; angka1++ {
+		if angka1%4 == 0 && angka1 != 0 {
+			fmt.Printf("  %d  ", angka1)
 		} else {
-			fmt.Println(angka1, "bukan kelipatan nilai")
+			fmt.Printf("")
 		}
 	}
 }
 
 func parameter(nilai <-chan int) {
 	for x := 0; x < 100; x++ {
-		time.Sleep(time.Second)
-		fmt.Printf("Program Mencari Angka Kelipatan dari suatu nilai yaitu %v \n dari bilangan 10 hingga 50", <-nilai)
+		time.Sleep(time.Second * 1)
+		fmt.Printf("Program Mencari Angka Kelipatan dari suatu nilai yaitu %v \n dari bilangan 0 hingga 50", <-nilai)
+		fmt.Println()
 	}
 }
 
@@ -29,6 +31,16 @@ func main() {
 	go multiple(results, 3)
 	go parameter(results)
 
-	time.Sleep(time.Second * 3000)
-	close(results)
+	fmt.Println()
+	stop := time.After(3 * time.Second)
+	tick := time.NewTicker(1 * time.Second)
+	defer tick.Stop()
+	for {
+		select {
+		case <-tick.C:
+			fmt.Println(time.Now())
+		case <-stop:
+			return
+		}
+	}
 }
