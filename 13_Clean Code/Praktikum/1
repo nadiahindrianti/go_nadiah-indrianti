@@ -1,13 +1,18 @@
+//pada code ini terdapat 3 kekurangan
 package main
 
+// kekurangan 1 tidak terdapat import "fmt" 
+//seharusnya diberikan code tersebut yang merupakan format untuk menerima code untuk mencetak atau menjalankan program
 type user struct {
 	id       int
-	username int
+	username int //kekurangan 2 adanya array yang tidak digunakan yaitu username dan password
+		    // seharusnya jika tidak digunakan jangan ditulis
 	password int
 }
 
 type userservice struct {
-	t []user
+	t []user // kekurangan 3 penamaan yang tidak umum atau jelas
+	// seharusnya diberikan keterangan untuk menjelaskan kegunaan nama method atau code ini
 }
 
 func (u userservice) getallusers() []user {
@@ -23,3 +28,6 @@ func (u userservice) getuserbyid(id int) user {
 
 	return user{}
 }
+
+// kekurangan 4 tidak adanya function yang menjalankan program seperti code func main atau lainnya
+//function tersebut sewajibnya ada agar program dapat berjalan untuk read dan write suatu code 
