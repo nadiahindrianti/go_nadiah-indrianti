@@ -7,8 +7,8 @@ import (
 
 func multiple(res chan<- int, angka1 int) {
 	res <- angka1
-	for angka1 := 10; angka1 <= 50; angka1++ {
-		if angka1%3 == 0 {
+	for angka1 := 0; angka1 <= 10; angka1++ {
+		if angka1%3 == 0 && angka1 != 0 {
 			fmt.Println(angka1, "merupakan kelipatan nilai")
 		} else {
 			fmt.Println(angka1, "bukan kelipatan nilai")
@@ -16,21 +16,21 @@ func multiple(res chan<- int, angka1 int) {
 	}
 }
 
-func parameter(nilai <-chan int) {
-	for x := 0; x < 100; x++ {
-		time.Sleep(time.Second)
-		fmt.Printf("Program Mencari Angka Kelipatan dari suatu nilai yaitu %v \n dari bilangan 10 hingga 50", <-nilai)
-	}
+// function to add an array of numbers.
+func tambahanjudul(t <-chan int) {
+	time.Sleep(time.Second)
+	fmt.Printf("Program Angka Kelipatan %v\n dari bilangan 0 sampai 10 ", <-t)
 }
 
 func main() {
-	fmt.Println("---------------------------------------------------------------------------------------------")
 	results := make(chan int, 2)
-	go multiple(results, 3)
-  go multiple(results, 6)
-  
-	go parameter(results)
 
-	time.Sleep(time.Second * 10)
+	go multiple(results, 3)
+	go tambahanjudul(results)
+	time.Sleep(time.Second * 1)
+	go multiple(results, 9)
+	go tambahanjudul(results)
+
+	time.Sleep(time.Second * 2)
 	close(results)
 }
