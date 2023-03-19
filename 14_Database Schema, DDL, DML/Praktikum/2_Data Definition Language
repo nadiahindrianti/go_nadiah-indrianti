@@ -1,0 +1,195 @@
+
+1. 
+
+CREATE SCHEMA `alta_online_shopping`;
+
+
+2 a
+CREATE TABLE `alta_online_shopping`.`user` (
+  `nama` VARCHAR(45) NOT NULL,
+  `alamat` VARCHAR(255) NOT NULL,
+  `tanggal lahir` DATE NULL,
+  `status_user` VARCHAR(45) NULL,
+  `gender` CHAR(1) NULL,
+  `created_at` TIMESTAMP NULL,
+  `updated_at` TIMESTAMP NULL);
+
+
+b
+CREATE TABLE `alta_online_shopping`.`product` (
+  `nama_product` VARCHAR(45) NOT NULL,
+  `harga_product` BIGINT(8) NOT NULL,
+  `created_at` TIMESTAMP NULL,
+  `updated_at` TIMESTAMP NULL,
+  PRIMARY KEY (`nama_product`));
+
+CREATE TABLE `alta_online_shopping`.`product_type` (
+  `kategori_product` INT NOT NULL);
+
+CREATE TABLE `alta_online_shopping`.`operator` (
+  `name_operator` VARCHAR(45) NOT NULL,
+  `created_at` TIMESTAMP NULL,
+  `updated_at` TIMESTAMP NULL);
+
+CREATE TABLE `alta_online_shopping`.`product_description` (
+  `description` MEDIUMTEXT NOT NULL,
+  `payment_method_product` VARCHAR(45) NULL);
+
+CREATE TABLE `alta_online_shopping`.`payment_method` (
+  `decription` MEDIUMTEXT NOT NULL,
+  `created_at` TIMESTAMP NULL,
+  `updated_at` TIMESTAMP NULL,
+  `alamat` VARCHAR(255) NOT NULL);
+
+ALTER TABLE `alta_online_shopping`.`product` 
+ADD COLUMN `alamat` VARCHAR(255) NOT NULL AFTER `updated_at`;
+
+ALTER TABLE `alta_online_shopping`.`product_type` 
+ADD COLUMN `alamat` VARCHAR(255) NOT NULL AFTER `kategori_product`;
+
+ALTER TABLE `alta_online_shopping`.`operator` 
+ADD COLUMN `alamat` VARCHAR(255) NOT NULL AFTER `updated_at`;
+
+ALTER TABLE `alta_online_shopping`.`product_description` 
+ADD COLUMN `alamat` VARCHAR(255) NOT NULL AFTER `payment_method_product`;
+
+
+c
+CREATE TABLE `alta_online_shopping`.`transaction` (
+  `id transaction` INT NOT NULL,
+  `name_product` VARCHAR(45) NOT NULL,
+  `created_at` TIMESTAMP NULL,
+  `updated` TIMESTAMP NULL,
+  `alamat` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id transaction`, `name_product`));
+
+CREATE TABLE `alta_online_shopping`.`transaction detail` (
+  `nama_product` VARCHAR(45) NOT NULL,
+  `alamat` VARCHAR(255) NOT NULL,
+  `id_transaction` INT NOT NULL,
+  `created_at` TIMESTAMP NULL,
+  `updated_at` TIMESTAMP NULL,
+  PRIMARY KEY (`nama_product`, `id_transaction`));
+
+
+3
+CREATE TABLE `alta_online_shopping`.`kurir` (
+  `field id` INT NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `created_at` TIMESTAMP NULL,
+  `updated_at` TIMESTAMP NULL,
+  PRIMARY KEY (`field id`));
+
+
+4
+ALTER TABLE `alta_online_shopping`.`kurir` 
+ADD COLUMN `ongkos_dasar` BIGINT(8) NOT NULL AFTER `updated_at`;
+
+
+
+5
+ALTER TABLE `alta_online_shopping`.`kurir` 
+RENAME TO  `alta_online_shopping`.`shipping`;
+
+
+6
+DROP TABLE `alta_online_shopping`.`shipping`;
+
+
+7
+a
+ALTER TABLE `alta_online_shopping`.`product` 
+ADD INDEX `alamat_idx` (`alamat` ASC) VISIBLE;
+ALTER TABLE `alta_online_shopping`.`product` 
+ADD CONSTRAINT `alamat`
+  FOREIGN KEY (`alamat`)
+  REFERENCES `alta_online_shopping`.`user` (`alamat`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+  
+  
+ALTER TABLE `alta_online_shopping`.`product_type` 
+ADD INDEX `alamat_idx` (`alamat` ASC) VISIBLE;
+ALTER TABLE `alta_online_shopping`.`product_type` 
+ADD CONSTRAINT `alamat`
+  FOREIGN KEY (`alamat`)
+  REFERENCES `alta_online_shopping`.`user` (`alamat`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+  
+ALTER TABLE `alta_online_shopping`.`product_description` 
+CHANGE COLUMN `description` `description` VARCHAR(255) NOT NULL ,
+ADD PRIMARY KEY (`alamat`, `description`);
+ALTER TABLE `alta_online_shopping`.`product_description` 
+ADD CONSTRAINT `alamat_product_description`
+  FOREIGN KEY (`alamat`)
+  REFERENCES `alta_online_shopping`.`user` (`alamat`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+
+ALTER TABLE `alta_online_shopping`.`transaction` 
+ADD INDEX `alamat_transaction_idx` (`alamat` ASC) VISIBLE;
+
+ALTER TABLE `alta_online_shopping`.`transaction` 
+ADD CONSTRAINT `alamat_transaction`
+  FOREIGN KEY (`alamat`)
+  REFERENCES `alta_online_shopping`.`user` (`alamat`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+ALTER TABLE `alta_online_shopping`.`transaction detail` 
+ADD INDEX `alamat_transaction detail_idx` (`alamat` ASC) VISIBLE;
+ALTER TABLE `alta_online_shopping`.`transaction detail` 
+ADD CONSTRAINT `alamat_transaction detail`
+  FOREIGN KEY (`alamat`)
+  REFERENCES `alta_online_shopping`.`user` (`alamat`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+  
+  
+b
+ALTER TABLE `alta_online_shopping`.`product_description` 
+ADD INDEX `description_idx` (`description` ASC) VISIBLE;
+ALTER TABLE `alta_online_shopping`.`product_description` 
+ADD CONSTRAINT `description`
+  FOREIGN KEY (`description`)
+  REFERENCES `alta_online_shopping`.`payment_method` (`decription`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+  
+  
+ALTER TABLE `alta_online_shopping`.`payment_method` 
+ADD INDEX `description_idx` (`decription` ASC) VISIBLE;
+ALTER TABLE `alta_online_shopping`.`payment_method` 
+ADD CONSTRAINT `description_payment_method`
+  FOREIGN KEY (`description`)
+  REFERENCES `alta_online_shopping`.`product_description` (`description`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+c
+ALTER TABLE `alta_online_shopping`.`user` 
+ADD INDEX `updated_user_idx` (`updated_at` ASC) VISIBLE;
+ALTER TABLE `alta_online_shopping`.`user` 
+ADD CONSTRAINT `updated_user`
+  FOREIGN KEY (`updated_at`)
+  REFERENCES `alta_online_shopping`.`payment_method` (`updated_at`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+  
+ALTER TABLE `alta_online_shopping`.`payment_method` 
+ADD INDEX `updated_payment_idx` (`updated_at` ASC) VISIBLE;
+ALTER TABLE `alta_online_shopping`.`payment_method` 
+ADD CONSTRAINT `updated_payment`
+  FOREIGN KEY (`updated_at`)
+  REFERENCES `alta_online_shopping`.`user` (`updated_at`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
