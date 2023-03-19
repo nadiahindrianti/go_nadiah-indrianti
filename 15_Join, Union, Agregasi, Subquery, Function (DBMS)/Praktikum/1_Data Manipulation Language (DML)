@@ -122,19 +122,19 @@
 
 
 
-2g
+3a
     UPDATE `alta_online_shop`.`product` SET `name` = 'boneka' WHERE (`id` = '1');
 
     SELECT * FROM product ;
 
 
-2h
+4a
     DELETE FROM `alta_online_shop`.`product` WHERE (`id` = '1');
 
     SELECT * FROM product ;
 
 
-2i
+4b
     DELETE FROM `alta_online_shop`.`product` WHERE (`product_type_id` = '1');
 
     SELECT * FROM product ;
