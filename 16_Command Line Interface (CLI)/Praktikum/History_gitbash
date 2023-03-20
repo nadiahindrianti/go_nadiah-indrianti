@@ -1,0 +1,101 @@
+1  zsh
+    2  zsh
+    3  zsh
+    4  pacman -S zsh
+    5  cd nadiah_at_monday_Maret_20_06:24:00_WIB_2023
+    6  cd nadiah_at_monday_Maret_20_06:23:30_WIB_2023
+    7  echo 'nadiah at $date'
+    8  echo 'nadiah at $(date)
+'
+    9  echo "nadiah at $(date)$
+'
+"
+   10  mkdir about_me
+   11  ls
+   12  cd nadiah_at_monday_Maret_20_06:34:30_WIB_2023
+   13  echo "nadiah at $(date)"
+   14  history>nadiah_at_monday_Maret_20_06:34:30_WIB_2023
+   15  ls
+   16  mkdir about_me
+   17  cd about_me
+   18  mkdir personal
+   19  cd_
+   20  cd ..
+   21  cd ..
+   22  tree nadiah_at_monday_Maret_20_06:34:30_WIB_2023
+   23  cd nadiah_at_monday_Maret_20_06:34:30_WIB_2023
+   24  tree nadiah_at_monday_maret_20_06:34:30_WIB_2023
+   25  cd ..
+   26  tree
+   27  ls -r
+   28  cd nadiah_at_monday_maret_20_06:34:30_WIB_2023
+   29  cd about me
+   30  cd about_me
+   31  cd personal
+   32  cd ..
+   33  cd ..
+   34  cd ..
+   35  zypper in tree
+   36  mkdir -p dir/{dir1,dir2}
+   37  zypper in tree
+   38  zypper in tree dir/
+   39  cd nadiah_at_monday_maret_20_06:34:30_WIB_2023
+   40  cd about me
+   41  cd about_me
+   42  cd personal
+   43  touch facebook.txt
+   44  echo "https://www.facebook.com/nadiahindrianti">facebook.txt
+   45  cd facebook.txt
+   46  cd ..
+   47  mkdir professional
+   48  cd professional
+   49  touch linkedin.txt
+   50  echo "https://www.linkedin.com/in/nadiahindriantilinkedin">linkedin.txt
+   51  cd ..
+   52  ls
+   53  tree -a /personal/
+   54  cd ..
+   55  mkdir my_friends
+   56  cd my_friends
+   57  touch list_of_my_friends.txt
+   58  curl https://gist.githubusercontent.com/tegarimansyah/e91f335753ab2c7fb12815779677e914/raw/94864388379fecee450fde26e3e73bfb2bcda194/list%2520of%2520my%2520friends.txt
+   59  history>list_of_my_friends.txt
+   60  curl https://gist.githubusercontent.com/tegarimansyah/e91f335753ab2c7fb12815779677e914/raw/94864388379fecee450fde26e3e73bfb2bcda194/list%2520of%2520my%2520friends.txt>list_of_my_friends.txt
+   61  cd ..
+   62  mkdir my_system_into
+   63  cd my_system_into
+   64  touch about_this_laptop.txt
+   65  echo "My username: NadiahIndrianti">about_this_laptop.txt
+   66  uname -a>about_this_laptop.txt
+   67  echo "My username:NadiahIndrianti" uname -a>about_this_laptop.txt
+   68  uname -a>about_this_laptop.txt
+   69  echo "My username:nadiahindrianti">about_this_laptop.txt
+   70  uname -a>about_this_laptop.txt
+   71  echo "My username:nadiahindrianti" and uname -a>about_this_laptop.txt
+   72  uname -a>about_this_laptop.txt
+   73  cd ..
+   74  touch internet_connection.txt
+   75  rm internet_connection.txt
+   76  cd my_system_into
+   77  touch internet_connection.txt
+   78  ping google.com
+   79  ping google.com
+   80  history>internet_connection.txt
+   81  ping google.com>internet_connection.txt
+   82  cd ..
+   83  cd ..
+   84  cd nadiah_at_monday_maret_20_06:34:30_WIB_2023
+   85  ls -r
+   86  tree nadiah_at_monday_maret_20_06:34:30_WIB_2023
+   87  cd ..
+   88  tree nadiah_at_monday_maret_20_06:34:30_WIB_2023
+   89  tree
+   90  ls -R
+   91  cd nadiah_at_monday_maret_20_06:34:30_WIB_2023
+   92  tree
+   93  cd ..
+   94  tree nadiah_at_monday_maret_20_06:34:30_WIB_2023
+   95  cd nadiah_at_monday_maret_20_06:34:30_WIB_2023
+   96  ls -R
+   97  history>nadiah_at_monday_maret_20_06:34:30_WIB_2023
+
