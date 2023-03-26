@@ -8,7 +8,7 @@ Pada bab ini mempelajari tentang echo golang, retrieve data, binding data, dan l
 
 Terdapat party library golang yang bisa digunakan yaitu echo, go kit, logrus, gorm.io, cobra.
 
-Kelebihan menggunakan echo framework yaitu optimezed router, data rending, data binding, middleware, scalable. Echo framework ini biasanya digunakan untuk mengembangkan aplikasi web
+Kelebihan menggunakan echo framework yaitu optimezed router, data rending, data binding, middleware, scalable. Echo framework ini biasanya digunakan untuk mengembangkan aplikasi web. Dalam bab ini akan merepresentasikan method restfull api dengan echo seperti GET, PUT, POSH, DELETE.
 
 
 ## Setting UP echo
