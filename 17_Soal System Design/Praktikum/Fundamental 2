@@ -1,0 +1,28 @@
+
+MY SQL
+
+SELECT * FROM users;
+
+
+
+-Redis
+
+GET users
+
+
+
+
+-Neo4j
+
+match (users)
+
+atau lengkapnya
+
+match (users:Crew)-[r:KNOWS*]-(n) where users.name='Morpheus' return users as r
+
+
+
+-Cassandra
+
+
+SELECT * FROM user;
