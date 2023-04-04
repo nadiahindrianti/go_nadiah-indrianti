@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"ORM_MVC/config"
-	"ORM_MVC/middlewares"
+	"ORM_MVC/lib/database"
 	"ORM_MVC/models"
 	"net/http"
 	"strconv"
@@ -163,12 +163,12 @@ func UpdateBookController(c echo.Context) error {
 	})
 }
 
-func LoginUserController(c echo.Context) error {
+func LoginUserControllers(c echo.Context) error {
 	user := models.User{}
 	c.Bind(&user)
 
-	users, e := database.LoginUsers(&user)
-	if e != nil {
+	users, err := database.LoginUsers(&user)
+	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
@@ -178,7 +178,7 @@ func LoginUserController(c echo.Context) error {
 }
 
 func GetUserDetailController(c echo.Context) error {
-	id, err := strconv.Atoi(c.Param('id'))
+	id, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
@@ -193,5 +193,5 @@ func GetUserDetailController(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "success",
 		"users":   users,
-	})	
+	})
 }
