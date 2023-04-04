@@ -39,11 +39,10 @@ func New() *echo.Echo {
 	eAuth.PUT("/books/:id", controllers.UpdateBookController)
 
 	eJwt := e.Group("/jwt")
-	eJwt.Use(echoMid.BasicAuth(m.BasicAutoDB))
-	eJwt.GET("/users", controllers.GetUserController)
+	eJwt.GET("/users", controllers.GetUserDetailController)
 	eJwt.GET("/user/:id", controllers.GetUsersController)
 	eJwt.POST("users", controllers.CreateUserController)
-	eJwt.POST("users/login", controllers.CreateUserController)
+	eJwt.POST("users/login", controllers.LoginUserControllers)
 	eJwt.DELETE("users/:id", controllers.DeleteUserController)
 	eJwt.PUT("/users/:id", controllers.UpdateUserController)
 	eJwt.GET("/books", controllers.GetBooksController)
