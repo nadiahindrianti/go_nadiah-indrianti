@@ -2,7 +2,7 @@
 
 # CI/CD
 
-Pada bab ini mempelajari tentang deployment, stategi deployment serta kelebihan dan kekurangannya.
+Pada bab ini mempelajari tentang Continous Integration (CI), continuous deployment (CD), cycle continuoud delivery, dan cycle continuous deployment.
 
 ## Resume
 
