@@ -17,12 +17,13 @@ func New() *echo.Echo {
 
 	eItem := e.Group("/item")
 	eItem.GET("", controllers.GetItemControllerAll)
-	eItem.GET("/:id", controllers.GetItemById)
-	eItem.GET("/category/:id", controllers.GetItemByCategori)
-	eItem.GET("?keyword=item_name", controllers.GetItemByCategori)
+	eItem.GET("/:id", controllers.GetItemControllerbyId)
+	eItem.GET("/category/:id", controllers.GetItemControllerbyCategoryId)
+	eItem.GET("?keyword=item_name", controllers.GetItemControllerbyName)
 	eItem.POST("", controllers.CreateItemController)
 	eItem.PUT("/:id", controllers.UpdateItemController)
 	eItem.DELETE("/:id", controllers.DeleteItemController)
+	eItem.POST("/category", controllers.CreateCategoryController)
 	eItem.GET("/category", controllers.GetCategoryControllerAll)
 	eItem.GET("/category/:id", controllers.GetCategoryController)
 

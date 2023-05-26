@@ -41,59 +41,63 @@ func GetItemControllerAll(c echo.Context) error {
 	})
 }
 
-func GetItemById(id any) (models.Item, error) {
-	var item models.Item
-
-	err := configs.DB.Where("id = ?", id).First(&item).Error
-
+func GetItemControllerbyId(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return models.Item{}, err
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"message": "Invalid Id",
+		})
 	}
-	return item, nil
-}
 
-func GetItemByCategori(name string) (models.Item, error) {
 	var item models.Item
-
-	err := configs.DB.Where("name = ?", name).First(&item).Error
-
-	if err != nil {
-		return models.Item{}, err
-	}
-	return item, nil
-}
-
-func GetItemController(c echo.Context) error {
-	Category, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
+	if err = configs.DB.Where("id = ?", id).First(&item).Error; err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	item, err := database.GetItembyCategory(Category)
+	return c.JSON(http.StatusOK, helpers.ResponseData{
+		Status:  "Success Get Item by ID",
+		Message: "Successfuly",
+		Data:    item,
+	})
+}
+
+func GetItemControllerbyCategoryId(c echo.Context) error {
+	categoryid, err := strconv.Atoi(c.Param("categoryid"))
 	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"message": "Invalid Id",
+		})
+	}
+
+	var item models.Item
+	if err = configs.DB.Where("categoryid = ?", categoryid).First(&item).Error; err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"messages": "Success Get Item",
-		"products": item,
+	return c.JSON(http.StatusOK, helpers.ResponseData{
+		Status:  "Success Get Item by CategoryID",
+		Message: "Successfuly",
+		Data:    item,
 	})
 }
 
 func GetItemControllerbyName(c echo.Context) error {
-	Name, err := strconv.Atoi(c.Param("name"))
+	name, err := strconv.Atoi(c.Param("name"))
 	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"message": "Invalid Id",
+		})
+	}
+
+	var item models.Item
+	if err = configs.DB.Where("name = ?", name).First(&item).Error; err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	item, err := database.GetItembyName(Name)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"messages": "Success Get Item",
-		"products": item,
+	return c.JSON(http.StatusOK, helpers.ResponseData{
+		Status:  "Success Get Item by CategoryID",
+		Message: "Successfuly",
+		Data:    item,
 	})
 }
 

@@ -1,7 +1,7 @@
 package configs
 
 import (
-	"Task_1/models"
+	"Task_2/models"
 	"fmt"
 
 	"github.com/jinzhu/gorm"
@@ -29,10 +29,10 @@ func InitDB() {
 
 	config := Config{
 		DB_Username: "root",
-		DB_Password: "Nadiah271,.",
-		DB_Port:     "3306",
-		DB_Host:     "localhost",
-		DB_Name:     "code-competence",
+		DB_Password: "",
+		DB_Port:     "",
+		DB_Host:     "",
+		DB_Name:     "",
 	}
 
 	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
@@ -54,9 +54,7 @@ func InitDB() {
 }
 
 func InitialMigration() {
-//	DB.AutoMigrate(&models.User{})
-//	DB.AutoMigrate(&models.Admin{})
+	DB.AutoMigrate(&models.User{})
 	DB.AutoMigrate(&models.Item{})
 	DB.AutoMigrate(&models.Category{})
-//	DB.AutoMigrate(&models.Order{})
 }
