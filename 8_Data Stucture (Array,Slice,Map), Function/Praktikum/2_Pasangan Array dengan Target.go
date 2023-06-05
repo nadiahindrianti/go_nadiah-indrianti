@@ -3,11 +3,21 @@ package main
 import "fmt"
 
 func PairSum(arr []int, target int) [] int {
-	arr := int {1,2,3,4,5,6,7,8,9,11}
-	target := int {6,10,11,12}
-	for target == input(arr[]) + input(arr[]){
-		fmt.Println[slicearr]
+	x, y := 0, len(arr)-1
+	// array x berada pada bagian kiri
+	// array y berada pada bagian kanan
+
+	for x < y {
+		sum := arr[x] + arr[y]
+		if sum == target {
+			return []int{x, y}
+		} else if sum < target {
+			x++
+		} else {
+			y--
+		}
 	}
+	return []int{}
 }
 
 
