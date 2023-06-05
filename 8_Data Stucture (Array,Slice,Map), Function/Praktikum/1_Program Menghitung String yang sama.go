@@ -4,8 +4,10 @@ import "fmt"
 
 func Mapping(slice []string) map[string]int {
 	mapping := make(map[string]int)
-	mapping= ("asd"; "qwe"; "adi")
-	fmt.Println(len(mapping))
+	for _, value := range slice {
+		mapping[value]++
+	}
+	return mapping
 }
 
 func main() {
