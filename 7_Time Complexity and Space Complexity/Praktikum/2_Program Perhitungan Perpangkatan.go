@@ -3,11 +3,16 @@ package main
 import "fmt"
 
 func pow(x, n int) int {
-	var result int = 0
-	for n > 1 {
-		n /= x
-		return result
+	if n == 0 {
+		return 1
 	}
+
+	if n%2 == 0 {
+		half := pow(x, n/2)
+		return half * half
+	}
+	
+	return x * pow(x, n-1)
 }
 
 func main() {
