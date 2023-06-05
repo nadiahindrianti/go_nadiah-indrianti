@@ -3,13 +3,23 @@ package main
 import "fmt"
 
 func munculSekali(angka string) []int {
-	var munculsekali int 
-	for i := 0; i<len(angka); i++{
-		if stringt[angka] =  int string(len(input[angka])){
-			return result
+	mapping := make(map[int]int)
+
+	for _, x := range angka {
+		num, err := strconv.Atoi(string(x))
+		if err != nil {
+			continue
+		}
+		mapping[num]++
+	}
+	var munculsekali []int 
+	for num, y := range mapping {
+		if y == 1 {
+			munculsekali = append(munculsekali, num)
 		}
 	}
 	
+	return munculsekali
 }
 
 func main() {
