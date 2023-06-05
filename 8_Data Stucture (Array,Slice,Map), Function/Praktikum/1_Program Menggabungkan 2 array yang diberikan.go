@@ -3,9 +3,18 @@ package main
 import "fmt"
 
 func ArrayMerge(arrayA, arrayB []string) []string {
-	ArrayMerge := make (array [])
-	arrayA = "king", "devil jin", "akuma", "sergei", "jin", "alisa", "hwoarang"
-	arrayB = append(arrayB,...)
+	ArrayMerge := append(arrayA, arrayB...)
+	result := make ([]string, 0)
+	arrayAandB := make(map[string]bool)
+
+	for _, u := range arrayMerge {
+		if !arrayAandB[u] {
+			arrayAandB[u] = true
+			result = append(result, u)
+		}
+	}
+
+	return result
 	
 }
 
