@@ -1,18 +1,21 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 func primeNumber(number int) bool {
-	var number int = 0
-	if number > 2 {
-		for number%i == 0 {
+	if number < 2 {
+		return false
+	}
+	
+	for i := 2; i <= int(math.Sqrt(float64(number))); i++ {
+		if number%i == 0 {
 			return false
 		}
-		if number%i != 0 {
-			return true
-		}
 	}
-
+	return true
 }
 
 func main() {
