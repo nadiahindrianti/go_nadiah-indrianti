@@ -13,9 +13,9 @@ import (
 
 // get all users
 func GetUsersController(c echo.Context) error {
-	var users []models.User
+	users, err := database.GetUsers()
 
-	if err := config.DB.Find(&users).Error; err != nil {
+	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
@@ -26,63 +26,58 @@ func GetUsersController(c echo.Context) error {
 
 // get user by id
 func GetUserController(c echo.Context) error {
-	// your solution here
-	id := c.Param("id")
-	var users models.User
+	id, err := strconv.Atoi(c.Param("id"))
+	users, err := database.GetUser(id)
 
-	if err := config.DB.First(&users, id).Error; err != nil {
+	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success get data user",
-		"user":    users,
+		"message": "success get users",
+		"users":   users,
 	})
 }
 
 // create new user
 func CreateUserController(c echo.Context) error {
-	user := models.User{}
-	c.Bind(&user)
+	user, err := database.CreateUser(c)
 
-	if err := config.DB.Save(&user).Error; err != nil {
+	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success create new user",
-		"user":    user,
+		"message": "success created user",
+		"data":    user,
 	})
 }
 
 // delete user by id
 func DeleteUserController(c echo.Context) error {
-	// your solution here
-	id := c.Param("id")
-	var users models.User
+	id, err := strconv.Atoi(c.Param("id"))
+	deleteUser, err := database.DeleteUser(id)
 
-	if err := config.DB.Delete(&users, id).Error; err != nil {
+	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "success delete user",
+		"users":   deleteUser,
 	})
 }
 
 // update user by id
 func UpdateUserController(c echo.Context) error {
-	// your solution here
-	user := models.User{}
-	c.Bind(&user)
-	id := c.Param("id")
-	var users models.User
+	user, err := database.UpdateUser(c)
 
-	if err := config.DB.Update(&users, id).Error; err != nil {
+	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success update user",
+		"message": "success updated user",
+		"data":    user,
 	})
 }
 
@@ -90,76 +85,73 @@ func UpdateUserController(c echo.Context) error {
 
 // get all book
 func GetBooksController(c echo.Context) error {
-	var books []models.Book
+	books, err := database.GetBooks()
 
-	if err := config.DB.Find(&books).Error; err != nil {
+	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success get all books",
-		"users":   books,
+		"message": "success get all book",
+		"data":    books,
 	})
 }
 
 // get user by id
 func GetBookController(c echo.Context) error {
-	// your solution here
-	id := c.Param("id")
-	var books models.Book
+	bookID, err := strconv.Atoi(c.Param("id"))
+	book, err := database.GetBook(bookID)
 
-	if err := config.DB.First(&books, id).Error; err != nil {
+	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success get data book",
-		"user":    books,
+		"message": "success get book by id",
+		"data":    book,
 	})
 }
 
 // create new user
 func CreateBookController(c echo.Context) error {
-	book := models.Book{}
-	c.Bind(&book)
+	book, err := database.CreateBook(c)
 
-	if err := config.DB.Save(&book).Error; err != nil {
+	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success create new user",
-		"user":    book,
+		"message": "success created book ",
+		"data":    book,
 	})
 }
 
 // delete user by id
 func DeleteBookController(c echo.Context) error {
-	// your solution here
-	id := c.Param("id")
-	var books models.Book
+	bookID, err := strconv.Atoi(c.Param("id"))
+	book, err := database.DeleteBook(bookID)
 
-	if err := config.DB.Delete(&books, id).Error; err != nil {
+	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success delete book",
+		"message": "success delete book by id",
+		"data":    book,
 	})
 }
 
 // update user by id
 func UpdateBookController(c echo.Context) error {
-	// your solution here
-	book := models.Book{}
-	c.Bind(&book)
-	id := c.Param("id")
-	var books models.Book
+	book, err := database.UpdateBook(c)
 
-	if err := config.DB.Update(&books, id).Error; err != nil {
+	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success update book",
+		"message": "success update book by id",
+		"data":    book,
 	})
 }
 
@@ -168,12 +160,14 @@ func LoginUserControllers(c echo.Context) error {
 	c.Bind(&user)
 
 	users, err := database.LoginUsers(&user)
+
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success login",
-		"users":   users,
+		"status": "success login",
+		"users":  users,
 	})
 }
 
@@ -183,7 +177,6 @@ func GetUserDetailController(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
-
 	users, err := database.GetDetailUsers(id)
 
 	if err != nil {
@@ -191,7 +184,7 @@ func GetUserDetailController(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "success",
-		"users":   users,
+		"status": "success",
+		"users":  users,
 	})
 }

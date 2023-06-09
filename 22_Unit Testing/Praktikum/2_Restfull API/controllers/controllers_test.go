@@ -1,439 +1,392 @@
 package controllers
 
 import (
+	"ORM_MVC/config"
+	"ORM_MVC/models"
 	"net/http"
+	"net/http/httptest"
+	"strings"
 	"testing"
 
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/labstack/echo"
+	"github.com/stretchr/testify/assert"
 )
 
+//user
+
+type UserResponse struct {
+	Message string        `json:"message"`
+	Data    []models.User `json:"data"`
+}
+
+type DeleteUserResponse struct {
+	Message string `json:"message"`
+}
+
+func InitEchoUser() *echo.Echo {
+	config.InitDBTest()
+	e := echo.New()
+	return e
+}
+
 func TestGetUsersController(t *testing.T) {
-	type args struct {
-		c echo.Context
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
+	var testCases = []struct {
+		name                 string
+		path                 string
+		expectStatus         int
+		expectBodyStartsWith string
 	}{
 		{
-			name: "valid test",
-			args: args{
-				name:     "kartika",
-				Email:    "kartika123@gmail.com",
-				Password: "123katika",
-			},
-			wantErr: http.StatusOK,
+			name:                 "success get users",
+			path:                 "/users",
+			expectStatus:         http.StatusOK,
+			expectBodyStartsWith: "{\"users\":",
 		},
-
-		{
-			name: "invalid test",
-			args: args{
-				name:     "nil",
-				Email:    "nil",
-				Password: "nil",
-			},
-			wantErr: http.StatusOK,
-		},
-		// TODO: Add test cases.
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := GetUsersController(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("GetUsersController() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
+
+	e := InitEchoUser()
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+
+	for _, testCase := range testCases {
+		c.SetPath(testCase.path)
+
+		if assert.NoError(t, GetUsersController(c)) {
+			assert.Equal(t, testCase.expectStatus, rec.Code)
+			body := rec.Body.String()
+
+			assert.True(t, strings.HasPrefix(body, testCase.expectBodyStartsWith))
+		}
 	}
 }
 
 func TestGetUserController(t *testing.T) {
-	type args struct {
-		c echo.Context
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
+	var testCases = []struct {
+		name                 string
+		path                 string
+		userID               string
+		expectStatus         int
+		expectBodyStartsWith string
 	}{
-		// TODO: Add test cases.
 		{
-			name: "valid test",
-			args: args{
-				name:     "kartika",
-				Email:    "kartika123@gmail.com",
-				Password: "123katika",
-			},
-			wantErr: http.StatusOK,
-		},
-
-		{
-			name: "invalid test",
-			args: args{
-				name:     "nil",
-				Email:    "nil",
-				Password: "nil",
-			},
-			wantErr: http.StatusOK,
+			name:                 "success get user",
+			path:                 "/users/:id",
+			userID:               "1",
+			expectStatus:         http.StatusOK,
+			expectBodyStartsWith: "{\"user\":[",
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := GetUserController(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("GetUserController() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
+
+	e := InitEchoUser()
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+
+	for _, testCase := range testCases {
+		c.SetPath(testCase.path)
+		c.SetParamNames("id")
+		c.SetParamValues(testCase.userID)
+
+		if assert.NoError(t, GetUserController(c)) {
+			assert.Equal(t, http.StatusOK, rec.Code)
+			body := rec.Body.String()
+
+			assert.True(t, strings.HasPrefix(body, testCase.expectBodyStartsWith))
+		}
 	}
 }
 
 func TestCreateUserController(t *testing.T) {
-	type args struct {
-		c echo.Context
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
+	var testCases = []struct {
+		name                 string
+		path                 string
+		userJSON             string
+		expectStatus         int
+		expectBodyStartsWith string
 	}{
-		// TODO: Add test cases.
 		{
-			name: "valid test",
-			args: args{
-				name:     "kartika",
-				Email:    "kartika123@gmail.com",
-				Password: "123katika",
-			},
-			wantErr: http.StatusOK,
-		},
-
-		{
-			name: "invalid test",
-			args: args{
-				name:     "nil",
-				Email:    "nil",
-				Password: "nil",
-			},
-			wantErr: http.StatusOK,
+			name:                 "success create user",
+			path:                 "/users/",
+			userJSON:             `{"name": "User1","email": "User1@gmail.com","password":"12462User1"}`,
+			expectStatus:         http.StatusCreated,
+			expectBodyStartsWith: "{\"users\":",
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := CreateUserController(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("CreateUserController() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
+
+	e := InitEchoUser()
+	for _, testCase := range testCases {
+		req := httptest.NewRequest(http.MethodPost, testCase.path, strings.NewReader(testCase.userJSON))
+		req.Header.Set("Content-Type", "application/json")
+		rec := httptest.NewRecorder()
+		c := e.NewContext(req, rec)
+
+		res := rec.Result()
+		defer res.Body.Close()
+
+		if assert.NoError(t, CreateUserController(c)) {
+			assert.True(t, strings.HasPrefix(rec.Body.String(), testCase.expectBodyStartsWith))
+		}
 	}
 }
 
 func TestDeleteUserController(t *testing.T) {
-	type args struct {
-		c echo.Context
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
+	var testCases = []struct {
+		name                 string
+		path                 string
+		userID               string
+		expectStatus         int
+		expectBodyStartsWith string
 	}{
-		// TODO: Add test cases.
 		{
-			name: "valid test",
-			args: args{
-				name:     "nil",
-				Email:    "nil",
-				Password: "nil",
-			},
-			wantErr: http.StatusOK,
-		},
-
-		{
-			name: "invalid test",
-			args: args{
-				name:     "kartika",
-				Email:    "kartika123@gmail.com",
-				Password: "123katika",
-			},
-			wantErr: http.StatusOK,
+			name:                 "success delete user",
+			path:                 "/users/:id",
+			userID:               "1",
+			expectStatus:         http.StatusOK,
+			expectBodyStartsWith: "{\"users\":",
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := DeleteUserController(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("DeleteUserController() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
+
+	e := InitEchoUser()
+	req := httptest.NewRequest(http.MethodDelete, "/", nil)
+	for _, testCase := range testCases {
+		rec := httptest.NewRecorder()
+		c := e.NewContext(req, rec)
+		c.SetPath(testCase.path)
+		c.SetParamNames("id")
+		c.SetParamValues(testCase.userID)
+
+			if assert.NoError(t, DeleteUserController(c)) {
+			assert.Equal(t, testCase.expectStatus, rec.Code)
+			body := rec.Body.String()
+			assert.True(t, strings.HasPrefix(body, testCase.expectBodyStartsWith))
+		}
 	}
 }
 
 func TestUpdateUserController(t *testing.T) {
-	type args struct {
-		c echo.Context
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
+	var testCases = []struct {
+		name                 string
+		path                 string
+		userID               string
+		userJSON             string
+		expectStatus         int
+		expectBodyStartsWith string
 	}{
-		// TODO: Add test cases.
 		{
-			name: "valid test",
-			args: args{
-				name:     "kartika123",
-				Email:    "kartika123@gmail.com",
-				Password: "123katika",
-			},
-			wantErr: http.StatusOK,
-		},
-
-		{
-			name: "invalid test",
-			args: args{
-				name:     "nil",
-				Email:    "nil",
-				Password: "nil",
-			},
-			wantErr: http.StatusOK,
+			name:                 "success update user",
+			path:                 "/users/:id",
+			userID:               "1",
+			userJSON:             `{"Name": "User","Email": "user@gmail.com","password":"12345User"}`,
+			expectStatus:         http.StatusOK,
+			expectBodyStartsWith: "{\"users\":",
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := UpdateUserController(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("UpdateUserController() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
+
+	e := InitEchoUser()
+	for _, testCase := range testCases {
+		req := httptest.NewRequest(http.MethodPut, "/", strings.NewReader(testCase.userJSON))
+		req.Header.Set("Content-Type", "application/json")
+		rec := httptest.NewRecorder()
+		c := e.NewContext(req, rec)
+		c.SetPath(testCase.path)
+		c.SetParamNames("id")
+		c.SetParamValues(testCase.userID)
+
+		res := rec.Result()
+		defer res.Body.Close()
+
+		if assert.NoError(t, UpdateUserController(c)) {
+			assert.Equal(t, testCase.expectStatus, rec.Code)
+			assert.True(t, strings.HasPrefix(rec.Body.String(), testCase.expectBodyStartsWith))
+		}
 	}
 }
 
-func TestGetBooksController(t *testing.T) {
-	type args struct {
-		c echo.Context
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-		{
-			name: "valid test",
-			args: args{
-				Judul:    "mentari",
-				Penulis:  "kartika",
-				Penerbit: "PT.KaryaSastra",
-			},
-			wantErr: http.StatusOK,
-		},
+//book
 
+type BookResponse struct {
+	Message string        `json:"message"`
+	Data    []models.Book `json:"data"`
+}
+
+type DeleteBookResponse struct {
+	Message string `json:"message"`
+}
+
+func InitEchoBook() *echo.Echo {
+	config.InitDBTest()
+	e := echo.New()
+	return e
+}
+
+func TestGetBooksController(t *testing.T) {
+	var testCases = []struct {
+		name                 string
+		path                 string
+		expectStatus         int
+		expectBodyStartsWith string
+	}{
 		{
-			name: "invalid test",
-			args: args{
-				Judul:    "nil",
-				Penulis:  "nil",
-				Penerbit: "nil",
-			},
-			wantErr: http.StatusOK,
+			name:                 "success get books",
+			path:                 "/books",
+			expectStatus:         http.StatusOK,
+			expectBodyStartsWith: "{\"books\":[",
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := GetBooksController(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("GetBooksController() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
+
+	e := InitEchoBook()
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+
+	for _, testCase := range testCases {
+		c.SetPath(testCase.path)
+
+		if assert.NoError(t, GetBooksController(c)) {
+			assert.Equal(t, http.StatusOK, rec.Code)
+			body := rec.Body.String()
+
+			assert.True(t, strings.HasPrefix(body, testCase.expectBodyStartsWith))
+		}
+	}
+}
+
+func TestGetBookController(t *testing.T) {
+	var testCases = []struct {
+		name                 string
+		path                 string
+		expectStatus         int
+		expectBodyStartsWith string
+	}{
+		{
+			name:                 "success get book",
+			path:                 "/books/:id",
+			expectStatus:         http.StatusOK,
+			expectBodyStartsWith: "{\"books\":[",
+		},
+	}
+
+	e := InitEchoBook()
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+
+	for _, testCase := range testCases {
+		c.SetPath(testCase.path)
+
+		if assert.NoError(t, GetBookController(c)) {
+			assert.Equal(t, http.StatusOK, rec.Code)
+			body := rec.Body.String()
+
+			assert.True(t, strings.HasPrefix(body, testCase.expectBodyStartsWith))
+		}
 	}
 }
 
 func TestCreateBookController(t *testing.T) {
-	type args struct {
-		c echo.Context
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
+	var testCases = []struct {
+		name                 string
+		path                 string
+		bookJSON             string
+		expectStatus         int
+		expectBodyStartsWith string
 	}{
-		// TODO: Add test cases.
 		{
-			name: "valid test",
-			args: args{
-				Judul:    "mentari",
-				Penulis:  "kartika",
-				Penerbit: "PT.KaryaSastra",
-			},
-			wantErr: http.StatusOK,
-		},
-
-		{
-			name: "invalid test",
-			args: args{
-				Judul:    "nil",
-				Penulis:  "nil",
-				Penerbit: "nil",
-			},
-			wantErr: http.StatusOK,
+			name:                 "success create book",
+			path:                 "/books/",
+			bookJSON:             `{"judul": "Mentari","penulis": "Lintang","penerbit":"PT.Karya Sastra"}`,
+			expectStatus:         http.StatusCreated,
+			expectBodyStartsWith: "{\"books\":",
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := CreateBookController(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("CreateBookController() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
+
+	e := InitEchoBook()
+	for _, testCase := range testCases {
+		req := httptest.NewRequest(http.MethodPost, testCase.path, strings.NewReader(testCase.bookJSON))
+		req.Header.Set("Content-Type", "application/json")
+		rec := httptest.NewRecorder()
+		c := e.NewContext(req, rec)
+
+		res := rec.Result()
+		defer res.Body.Close()
+
+		if assert.NoError(t, CreateBookController(c)) {
+			assert.True(t, strings.HasPrefix(rec.Body.String(), testCase.expectBodyStartsWith))
+		}
 	}
 }
 
 func TestDeleteBookController(t *testing.T) {
-	type args struct {
-		c echo.Context
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
+	var testCases = []struct {
+		name                 string
+		path                 string
+		bookID               string
+		expectStatus         int
+		expectBodyStartsWith string
 	}{
-		// TODO: Add test cases.
 		{
-			name: "valid test",
-			args: args{
-				Judul:    "nil",
-				Penulis:  "nil",
-				Penerbit: "nil",
-			},
-			wantErr: http.StatusOK,
-		},
-
-		{
-			name: "invalid test",
-			args: args{
-				Judul:    "mentari",
-				Penulis:  "kartika",
-				Penerbit: "PT.KaryaSastra",
-			},
-			wantErr: http.StatusOK,
+			name:                 "success delete book",
+			path:                 "/books/:id",
+			bookID:               "1",
+			expectStatus:         http.StatusOK,
+			expectBodyStartsWith: "{\"books\":",
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := DeleteBookController(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("DeleteBookController() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
+
+	e := InitEchoBook()
+	req := httptest.NewRequest(http.MethodDelete, "/", nil)
+	for _, testCase := range testCases {
+		rec := httptest.NewRecorder()
+		c := e.NewContext(req, rec)
+		c.SetPath(testCase.path)
+		c.SetParamNames("id")
+		c.SetParamValues(testCase.bookID)
+
+		if assert.NoError(t, DeleteBookController(c)) {
+			assert.Equal(t, testCase.expectStatus, rec.Code)
+			body := rec.Body.String()
+			assert.True(t, strings.HasPrefix(body, testCase.expectBodyStartsWith))
+		}
 	}
 }
 
 func TestUpdateBookController(t *testing.T) {
-	type args struct {
-		c echo.Context
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
+	var testCases = []struct {
+		name                 string
+		path                 string
+		bookID               string
+		bookJSON             string
+		expectStatus         int
+		expectBodyStartsWith string
 	}{
-		// TODO: Add test cases.
 		{
-			name: "valid test",
-			args: args{
-				Judul:    "mentari",
-				Penulis:  "kartikasari",
-				Penerbit: "PT.KaryaSastra",
-			},
-			wantErr: http.StatusOK,
-		},
-
-		{
-			name: "invalid test",
-			args: args{
-				Judul:    "mentari",
-				Penulis:  "kartika",
-				Penerbit: "PT.KaryaSastra",
-			},
-			wantErr: http.StatusOK,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := UpdateBookController(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("UpdateBookController() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
-	}
-}
-
-func TestLoginUserControllers(t *testing.T) {
-	type args struct {
-		c echo.Context
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-		{
-			name: "valid test",
-			args: args{
-				name:     "kartika",
-				Email:    "kartika123@gmail.com",
-				Password: "123katika",
-			},
-			wantErr: http.StatusOK,
-		},
-
-		{
-			name: "invalid test",
-			args: args{
-				name:     "nil",
-				Email:    "nil",
-				Password: "nil",
-			},
-			wantErr: http.StatusOK,
+			name:                 "success update book",
+			path:                 "/books/:id",
+			bookID:               "1",
+			bookJSON:             `{"judul": "Mentari","penulis": "Lintang","penerbit":"PT.Karya Sastra"}`,
+			expectStatus:         http.StatusOK,
+			expectBodyStartsWith: "{\"books\":",
 		},
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := LoginUserControllers(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("LoginUserControllers() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
-	}
-}
+	e := InitEchoBook()
+	for _, testCase := range testCases {
+		req := httptest.NewRequest(http.MethodPut, "/", strings.NewReader(testCase.bookJSON))
+		req.Header.Set("Content-Type", "application/json")
+		rec := httptest.NewRecorder()
+		c := e.NewContext(req, rec)
+		c.SetPath(testCase.path)
+		c.SetParamNames("id")
+		c.SetParamValues(testCase.bookID)
 
-func TestGetUserDetailController(t *testing.T) {
-	type args struct {
-		c echo.Context
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-		{
-			name: "valid test",
-			args: args{
-				name:     "kartika",
-				Email:    "kartika123@gmail.com",
-				Password: "123katika",
-			},
-			wantErr: http.StatusOK,
-		},
+		res := rec.Result()
+		defer res.Body.Close()
 
-		{
-			name: "invalid test",
-			args: args{
-				name:     "nil",
-				Email:    "nil",
-				Password: "nil",
-			},
-			wantErr: http.StatusOK,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := GetUserDetailController(tt.args.c); (err != nil) != tt.wantErr {
-				t.Errorf("GetUserDetailController() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
+		if assert.NoError(t, UpdateBookController(c)) {
+			assert.Equal(t, testCase.expectStatus, rec.Code)
+			assert.True(t, strings.HasPrefix(rec.Body.String(), testCase.expectBodyStartsWith))
+		}
 	}
 }
