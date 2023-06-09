@@ -2,7 +2,7 @@ package main
 
 import (
 	"net/http"
-
+	"strconv"
 	"github.com/labstack/echo/v4"
 )
 
@@ -14,10 +14,6 @@ type User struct {
 }
 
 var users []User
-users.Id = "1234567"
-users.Email = "rasyaaruq123@gmail.com"
-user.Nama = "Rasya Aruq"
-user.Password = "123rasya"
 
 
 // -------------------- controller --------------------
@@ -33,39 +29,80 @@ func GetUsersController(c echo.Context) error {
 // get user by id
 func GetUserController(c echo.Context) error {
 	// your solution here
-	user := new(Users)
-	user.Id = c.QuerryParam("keywords")
-	user.Email = c.QuerryParam("keyword")
-	user.Nama = "Jamali Rasyid"
-	user.Password = "abc123"
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"messages": "success delete user",
-		"user":     user,
+	userId, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"messages": "invalid user id",
+		})
+	}
+
+	for _, user := range users {
+		if user.Id == userId {
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"messages": "success get user by id",
+				"User":     user,
+			})
+		}
+	}
+
+	return c.JSON(http.StatusNotFound, map[string]interface{}{
+		"messages": "user not found",
 	})
 }
 
 // delete user by id
 func DeleteUserController(c echo.Context) error {
 	// your solution here
-	user := new(Users)
-	user.Id = c.Param("id")
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"messages": "success delete user",
-		"user":     user,
-	})
+	userId, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"messages": "invalid user id",
+		})
+	}
 
+	for i, user := range users {
+		if user.Id == userId {
+			users = append(users[:i], users[i+1:]...)
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"messages": "success delete user by id",
+			})
+		}
+	}
+
+	return c.JSON(http.StatusNotFound, map[string]interface{}{
+		"messages": "user not found",
+	})
 }
 
 // update user by id
 func UpdateUserController(c echo.Context) error {
 	// your solution here
-	user := new(Users)
-	c.Bind(user)
+	userId, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"messages": "invalid user id",
+		})
+	}
 
-	user.Id = c.Param("id")
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"messages": "success update user",
-		"user":     user,
+	for i, user := range users {
+		if user.Id == userId {
+			// binding data
+			updatedUser := User{}
+			c.Bind(&updatedUser)
+
+			// update data
+			updatedUser.Id = user.Id
+			users[i] = updatedUser
+
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"messages": "success update user by id",
+				"user":     updatedUser,
+			})
+		}
+	}
+
+	return c.JSON(http.StatusNotFound, map[string]interface{}{
+		"messages": "user not found",
 	})
 }
 
